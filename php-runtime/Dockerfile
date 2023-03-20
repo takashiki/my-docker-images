@@ -16,8 +16,9 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh; \
     php -r "unlink('composer-setup.php');"; \
     mv composer.phar /usr/local/bin/composer;
 
-COPY --from=anroe/nginx-geoip2:1.19.2-geoip2-3.3 /usr/lib/nginx/modules/ngx_http_geoip2_module.so /usr/lib/nginx/modules
-RUN chmod -R 644 /usr/lib/nginx/modules/ngx_http_geoip2_module.so;
+COPY --from=anroe/nginx-geoip2:1.18.0-geoip2-3.3 /usr/lib/nginx/modules/ngx_http_geoip2_module.so /usr/lib/nginx/modules
+RUN chmod -R 644 /usr/lib/nginx/modules/ngx_http_geoip2_module.so; \
+    docker-php-ext-install opcache
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
